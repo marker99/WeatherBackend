@@ -362,4 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-appsettings.Development.json
+# Ignore the API settings file
+/WeatherBackend/WeatherApiSettings.cs

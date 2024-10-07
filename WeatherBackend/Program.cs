@@ -1,6 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using WeatherBackend;
 using WeatherBackend.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
         builder => builder
-            .WithOrigins("http://localhost:5173") 
+            .WithOrigins("http://localhost:5173")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -24,20 +28,8 @@ builder.Services.AddCors(options =>
 // Load appsettings.Development.json
 builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
 
-// Bind WeatherApiSettings from appsettings.Development.json
-builder.Services.Configure<WeatherApiSettings>(
-    builder.Configuration.GetSection("WeatherApiSettings"));
-
-// Configure HttpClient for WeatherService
-builder.Services.AddHttpClient<WeatherService>();
-
-// Register WeatherService
-builder.Services.AddSingleton(sp =>
-{
-    var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient();
-    var apiKey = sp.GetRequiredService<IOptions<WeatherApiSettings>>().Value.ApiKey;
-    return new WeatherService(httpClient, apiKey);
-});
+// Register HttpClient and WeatherService
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
 
 var app = builder.Build();

@@ -13,10 +13,10 @@ namespace WeatherBackend.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
-        public WeatherService(HttpClient httpClient, string apiKey)
+        public WeatherService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _apiKey = apiKey;
+            _apiKey = WeatherApiSettings.ApiKey;
         }
 
         public async Task<Weather> GetCurrentWeatherAsync(string city)

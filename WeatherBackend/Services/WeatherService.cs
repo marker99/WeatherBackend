@@ -8,7 +8,7 @@ using WeatherBackend.Models;
 
 namespace WeatherBackend.Services
 {
-    public class WeatherService
+    public class WeatherService : IWeatherService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
